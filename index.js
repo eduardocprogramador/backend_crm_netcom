@@ -18,8 +18,10 @@ app.get('/', (req, res) => {
 })
 const UserRoutes = require('./routes/UserRoutes')
 const MatriculadoRoutes = require('./routes/MatriculadoRoutes')
+const InteressadoRoutes = require('./routes/InteressadoRoutes')
 app.use('/user', UserRoutes)
 app.use('/matriculado', MatriculadoRoutes)
+app.use('/interessado', InteressadoRoutes)
 const PORT = process.env.PORT || 5000
 conn.sync(/*{force: true}*/).then(() => {
   app.listen(PORT)

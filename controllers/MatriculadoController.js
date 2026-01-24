@@ -2,16 +2,16 @@ const Matriculado = require('../models/Matriculado')
 const getTodayDate = require('../utils/getTodayDate')
 const capitalize = require('../utils/capitalize')
 const getMatriculadosOrInteressados = require('../utils/getMatriculadosOrInteressados')
+const totalByMonth = require('../utils/totalByMonth')
 
 class MatriculadoController {
     static async add(req, res) {
         let { name, phone, category, course } = req.body
         category = category.toString()
         if (!name || !phone || !category || !course) {
-            res.status(422).json({
+            return res.status(422).json({
                 message: 'Preencha todos os campos'
             })
-            return
         }
         const matriculadoExists = await Matriculado.findOne({ where: { phone } })
         if (matriculadoExists) {
@@ -41,6 +41,36 @@ class MatriculadoController {
                 Matriculado, initialDate, finalDate, name, category, course
             )
             return res.json({ matriculados, total })
+        } catch (error) {
+            console.error(error)
+            if (error.status == 422) {
+                return res.status(422).json({ message: error.message })
+            }
+            return res.status(500).json({ message: 'Erro ao buscar matriculados' })
+        }
+    }
+    static async totalByMonth(req, res) {
+        try {
+            const { initialDate, finalDate } = req.query
+            const { result: matriculados, total } = await totalByMonth(
+                Matriculado, initialDate, finalDate
+            )
+            return res.json({ matriculados, total })
+        } catch (error) {
+            console.error(error)
+            if (error.status == 422) {
+                return res.status(422).json({ message: error.message })
+            }
+            return res.status(500).json({ message: 'Erro ao buscar matriculados' })
+        }
+    }
+    static async totalByCourse(req, res) {
+        try {
+            const { initialDate, finalDate } = req.query
+            const { totalByCourse, total } = await getTotalMatriculadosByCourse(
+                initialDate, finalDate
+            )
+            return res.json({ totalByCourse, total })
         } catch (error) {
             console.error(error)
             if (error.status == 422) {
