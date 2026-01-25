@@ -49,6 +49,16 @@ class MatriculadoController {
             return res.status(500).json({ message: 'Erro ao buscar matriculados' })
         }
     }
+    static async delete(req, res) {
+        const { id } = req.params
+        try {
+            const matriculado = await Matriculado.findByPk(id)
+            await matriculado.destroy()
+            return res.json({ message: "Matriculado removido com sucesso" })
+        } catch (error) {
+            return res.status(500).json({ message: "Erro ao remover matriculado" })
+        }
+    }
     static async totalByMonth(req, res) {
         try {
             const { initialDate, finalDate } = req.query
