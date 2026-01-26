@@ -56,6 +56,47 @@ class InteressadoController {
             return res.status(500).json({ message: 'Erro ao buscar interessados' })
         }
     }
+    static async delete(req, res) {
+        const { id } = req.params
+        try {
+            const interessado = await Interessado.findByPk(id)
+            await interessado.destroy()
+            return res.json({ message: "Interessado removido com sucesso" })
+        } catch (error) {
+            return res.status(500).json({ message: "Erro ao remover interessado" })
+        }
+    }
+    static async getById(req, res) {
+        const { id } = req.params
+        try {
+            const interessado = await Interessado.findByPk(id)
+            return res.json({ interessado })
+        } catch (error) {
+            return res.status(500).json({ message: "Erro ao encontrar interessado" })
+        }
+    }
+    static async update(req, res) {
+        const { id } = req.params
+        let { name, phone, category, course, email, source, obs } = req.body
+        category = category.toString()
+        if (!name || !phone || !category || !course) {
+            return res.status(422).json({
+                message: 'Preencha os campos obrigatórios'
+            })
+        }
+        try {
+            await Interessado.update(
+                { name, phone, category, course, email, source, obs },
+                { where: { id } }
+            )
+            return res.json({ message: 'Interessado atualizado' })
+        } catch (error) {
+            console.error(error)
+            return res.status(500).json({
+                message: 'Erro ao atualizar interessado'
+            })
+        }
+    }
     static async totalByMonth(req, res) {
         try {
             const { initialDate, finalDate } = req.query
@@ -74,10 +115,10 @@ class InteressadoController {
     static async totalBySource(req, res) {
         try {
             const { initialDate, finalDate } = req.query
-            const { totalBySource, total } = await getTotalInteressadosBySource(
+            const { interessados, total } = await getTotalInteressadosBySource(
                 initialDate, finalDate
             )
-            return res.json({ totalBySource, total })
+            return res.json({ interessados, total })
         } catch (error) {
             console.error(error)
             if (error.status == 422) {

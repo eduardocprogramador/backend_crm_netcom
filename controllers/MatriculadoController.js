@@ -59,10 +59,41 @@ class MatriculadoController {
             return res.status(500).json({ message: "Erro ao remover matriculado" })
         }
     }
+    static async getById(req, res) {
+        const { id } = req.params
+        try {
+            const matriculado = await Matriculado.findByPk(id)
+            return res.json({ matriculado })
+        } catch (error) {
+            return res.status(500).json({ message: "Erro ao encontrar matriculado" })
+        }
+    }
+    static async update(req, res) {
+        const { id } = req.params
+        let { name, phone, category, course } = req.body
+        category = category.toString()
+        if (!name || !phone || !category || !course) {
+            return res.status(422).json({
+                message: 'Preencha todos os campos'
+            })
+        }
+        try {
+            await Matriculado.update(
+                { name, phone, category, course },
+                { where: { id } }
+            )
+            return res.json({ message: 'Matriculado atualizado' })
+        } catch (error) {
+            console.error(error)
+            return res.status(500).json({
+                message: 'Erro ao atualizar matriculado'
+            })
+        }
+    }
     static async totalByMonth(req, res) {
         try {
             const { initialDate, finalDate } = req.query
-            const { result: matriculados, total } = await totalByMonth(
+            let { result: matriculados, total } = await totalByMonth(
                 Matriculado, initialDate, finalDate
             )
             return res.json({ matriculados, total })

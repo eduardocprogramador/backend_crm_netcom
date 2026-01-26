@@ -5,8 +5,10 @@ const checkToken = require('../utils/checkToken')
 
 router.post('/add', checkToken, MatriculadoController.add)
 router.get('/search', checkToken, MatriculadoController.search)
-router.delete('/:id', MatriculadoController.delete)
-router.get('/total_by_month', MatriculadoController.totalByMonth)
+router.delete('/:id', checkToken, MatriculadoController.delete)
+router.patch('/:id', checkToken, MatriculadoController.update)
+router.get('/total_by_month', checkToken, MatriculadoController.totalByMonth)
 router.get('/total_by_course', MatriculadoController.totalByCourse)
+router.get('/matriculado/:id', checkToken, MatriculadoController.getById)
 
 module.exports = router

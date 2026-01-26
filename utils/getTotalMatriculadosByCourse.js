@@ -1,6 +1,6 @@
 const { Op, fn, col, literal } = require("sequelize")
 
-const getTotalMatriculadosBySource = async (initialDate, finalDate) => {
+const getTotalMatriculadosByCourse = async (initialDate, finalDate) => {
     if (!initialDate || !finalDate) {
         const error = new Error("Preencha os campos de data")
         error.status = 422

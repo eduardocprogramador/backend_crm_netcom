@@ -1,4 +1,17 @@
 const { Op, fn, col, literal } = require("sequelize")
+const Interessado = require("../models/Interessado")
+
+const SOURCES = [
+    "Google",
+    "Instagram",
+    "Facebook",
+    "Site",
+    "Ex-aluno",
+    "Indicação",
+    "Panfleto",
+    "WhatsApp",
+    "Nenhum"
+]
 
 const getTotalInteressadosBySource = async (initialDate, finalDate) => {
     if (!initialDate || !finalDate) {
@@ -6,33 +19,47 @@ const getTotalInteressadosBySource = async (initialDate, finalDate) => {
         error.status = 422
         throw error
     }
+
     if (initialDate > finalDate) {
         const error = new Error("Data inicial maior que data final")
         error.status = 422
         throw error
     }
-    const totalBySource = await Interessado.findAll({
+
+    // 1) Busca só o que existe no banco
+    const rows = await Interessado.findAll({
         attributes: [
             [
-                // transforma NULL em "Nenhum"
-                literal("COALESCE(source, 'Nenhum')"),
+                literal("COALESCE(NULLIF(source, ''), 'Nenhum')"),
                 "source"
             ],
             [fn("COUNT", col("id")), "total"]
         ],
         where: {
-            date: {
-                [Op.between]: [initialDate, finalDate]
-            }
+            date: { [Op.between]: [initialDate, finalDate] }
         },
-        group: [literal("COALESCE(source, 'Nenhum')")],
-        order: [[literal("total"), "DESC"]],
+        group: [
+            literal("COALESCE(NULLIF(source, ''), 'Nenhum')")
+        ],
         raw: true
     })
-    const total = totalBySource.reduce(
-        (acc, item) => acc + Number(item.total), 0
+
+    // 2) Mapa source -> total
+    const totalsMap = new Map(
+        rows.map(r => [r.source, Number(r.total)])
     )
-    return { totalBySource, total }
+
+    // 3) Gera TODOS os canais, preenchendo 0 quando não existir
+    const interessados = SOURCES.map(source => ({
+        source, total: totalsMap.get(source) ?? 0
+    }))
+
+    // 4) Total geral
+    const total = interessados.reduce(
+        (acc, item) => acc + item.total, 0
+    )
+
+    return { interessados, total }
 }
 
 module.exports = getTotalInteressadosBySource
