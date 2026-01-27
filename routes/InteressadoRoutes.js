@@ -8,7 +8,7 @@ router.get('/search', checkToken, InteressadoController.search)
 router.delete('/:id', checkToken, InteressadoController.delete)
 router.patch('/:id', checkToken, InteressadoController.update)
 router.get('/total_by_month', checkToken, InteressadoController.totalByMonth)
-router.get('/total_by_source', InteressadoController.totalBySource)
+router.get('/total_by_source', checkToken, InteressadoController.totalBySource)
 router.get('/:id', checkToken, InteressadoController.getById)
 
 module.exports = router

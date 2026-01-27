@@ -61,7 +61,7 @@ class InteressadoController {
         try {
             const interessado = await Interessado.findByPk(id)
             await interessado.destroy()
-            return res.json({ message: "Interessado removido com sucesso" })
+            return res.json({ message: "Interessado removido" })
         } catch (error) {
             return res.status(500).json({ message: "Erro ao remover interessado" })
         }
@@ -89,7 +89,11 @@ class InteressadoController {
                 { name, phone, category, course, email, source, obs },
                 { where: { id } }
             )
-            return res.json({ message: 'Interessado atualizado' })
+            const interessado = await Interessado.findByPk(id)
+            return res.json({ 
+                interessado,
+                message: 'Interessado atualizado' 
+            })
         } catch (error) {
             console.error(error)
             return res.status(500).json({

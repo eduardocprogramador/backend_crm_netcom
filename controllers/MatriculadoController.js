@@ -54,7 +54,7 @@ class MatriculadoController {
         try {
             const matriculado = await Matriculado.findByPk(id)
             await matriculado.destroy()
-            return res.json({ message: "Matriculado removido com sucesso" })
+            return res.json({ message: "Matriculado removido" })
         } catch (error) {
             return res.status(500).json({ message: "Erro ao remover matriculado" })
         }
@@ -82,7 +82,11 @@ class MatriculadoController {
                 { name, phone, category, course },
                 { where: { id } }
             )
-            return res.json({ message: 'Matriculado atualizado' })
+            const matriculado = await Matriculado.findByPk(id)
+            return res.json({ 
+                matriculado,
+                message: 'Matriculado atualizado' 
+            })
         } catch (error) {
             console.error(error)
             return res.status(500).json({
