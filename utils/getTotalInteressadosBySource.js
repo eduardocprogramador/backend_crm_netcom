@@ -19,7 +19,6 @@ const getTotalInteressadosBySource = async (initialDate, finalDate) => {
         error.status = 422
         throw error
     }
-
     if (initialDate > finalDate) {
         const error = new Error("Data inicial maior que data final")
         error.status = 422
@@ -49,7 +48,7 @@ const getTotalInteressadosBySource = async (initialDate, finalDate) => {
         rows.map(r => [r.source, Number(r.total)])
     )
 
-    // 3) Gera TODOS os canais, preenchendo 0 quando não existir
+    // 3) Gera todos os canais, preenchendo 0 quando não existir
     const interessados = SOURCES.map(source => ({
         source, total: totalsMap.get(source) ?? 0
     }))

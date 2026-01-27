@@ -36,7 +36,7 @@ const totalByMonth = async (Model, initialDate, finalDate) => {
         throw error
     }
     
-    // 1) Conta por mês SOMENTE dentro do intervalo
+    // 1) Conta por mês somente dentro do intervalo
     const rows = await Model.findAll({
         attributes: [
             [fn("DATE_FORMAT", col("date"), "%Y-%m"), "ym"],
@@ -55,12 +55,14 @@ const totalByMonth = async (Model, initialDate, finalDate) => {
 
     // 3) Gera todos os meses do intervalo e preenche 0 quando não existir
     const months = listMonthsBetween(initialDate, finalDate)
-
     const result = months.map((m) => ({
         month: m.month,                 // Jan/2025
         total: totalsMap.get(m.ym) ?? 0 // inclui meses com 0
     }))
+
+    // 4) Total geral
     const total = result.reduce((acc, item) => acc + item.total, 0)
+
     return { result, total, range: { start: initialDate, end: finalDate } }
 }
 

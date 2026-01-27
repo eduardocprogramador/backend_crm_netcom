@@ -80,7 +80,7 @@ class UserController {
         } else {
             currentUser = null
         }
-        return res.status(200).json({ currentUser })
+        return res.json({ currentUser })
     }
     static async getById(req, res) {
         const id = req.params.id
@@ -91,7 +91,7 @@ class UserController {
             })
             return
         }
-        res.status(200).json({ user })
+        res.json({ user })
     }
     static async update(req, res) {
         const token = getToken(req)
@@ -128,7 +128,7 @@ class UserController {
             const updatedUser = await User.findByPk(user.id, {
                 attributes: { exclude: ['password'] }
             })
-            res.status(200).json({
+            res.json({
                 user: updatedUser,
                 message: 'Usuário atualizado'
             })
