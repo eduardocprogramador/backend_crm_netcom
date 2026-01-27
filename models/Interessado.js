@@ -24,7 +24,7 @@ const Interessado = sequelize.define('Interessado', {
         allowNull: false
     },
     category: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(2),
         allowNull: false
     },
     course: {
@@ -36,7 +36,7 @@ const Interessado = sequelize.define('Interessado', {
         allowNull: false
     },
     attendant: {
-        type: DataTypes.STRING(30),
+        type: DataTypes.STRING,
         allowNull: false
     },
     obs: {

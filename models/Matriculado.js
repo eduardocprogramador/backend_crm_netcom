@@ -16,7 +16,7 @@ const Matriculado = sequelize.define('Matriculado', {
         allowNull: false
     },
     category: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(2),
         allowNull: false
     },
     course: {
