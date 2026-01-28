@@ -3,6 +3,7 @@ const getTodayDate = require('../utils/getTodayDate')
 const capitalize = require('../utils/capitalize')
 const getMatriculadosOrInteressados = require('../utils/getMatriculadosOrInteressados')
 const totalByMonth = require('../utils/totalByMonth')
+const getTotalMatriculadosByCourse = require('../utils/getTotalMatriculadosByCourse')
 
 class MatriculadoController {
     static async add(req, res) {
@@ -112,10 +113,10 @@ class MatriculadoController {
     static async totalByCourse(req, res) {
         try {
             const { initialDate, finalDate } = req.query
-            const { totalByCourse, total } = await getTotalMatriculadosByCourse(
+            const { matriculados, total } = await getTotalMatriculadosByCourse(
                 initialDate, finalDate
             )
-            return res.json({ totalByCourse, total })
+            return res.json({ matriculados, total })
         } catch (error) {
             console.error(error)
             if (error.status == 422) {
