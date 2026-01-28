@@ -1,4 +1,12 @@
-require('dotenv').config()
+const fs = require('fs')
+let envFile = '.env'
+if (process.env.NODE_ENV == 'production') {
+  envFile = '.env.production'
+} else if (fs.existsSync('.env.development')) {
+  envFile = '.env.development'
+}
+require('dotenv').config({ path: envFile })
+
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -15,6 +23,7 @@ const InteressadoRoutes = require('./routes/InteressadoRoutes')
 app.use(express.json())
 app.use(cors({ credentials: true, origin: process.env.ORIGIN }))
 app.use(express.static('public'))
+
 app.get('/', (req, res) => {
   res.status(200).json({
     message: '✅ API está funcionando!',
