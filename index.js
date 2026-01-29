@@ -31,15 +31,6 @@ app.get('/', (req, res) => {
   })
 })
 
-app.get("/health", (req, res) => {
-  try {
-    require("mysql2")
-    return res.json({ ok: true, mysql2: "loaded" })
-  } catch (e) {
-    return res.status(500).json({ ok: false, error: String(e) })
-  }
-})
-
 app.use('/user', UserRoutes)
 app.use('/matriculado', MatriculadoRoutes)
 app.use('/interessado', InteressadoRoutes)
