@@ -14,7 +14,7 @@ const MatriculadoRoutes = require('./routes/MatriculadoRoutes')
 const InteressadoRoutes = require('./routes/InteressadoRoutes')
 
 app.use(express.json())
-app.use(cors({ credentials: true, origin: process.env.ORIGIN }))
+app.use(cors())
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
