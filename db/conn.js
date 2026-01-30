@@ -1,3 +1,4 @@
+require('mysql2')
 const { Sequelize } = require('sequelize')
 const sequelize = new Sequelize(
     process.env.DB_NAME,
@@ -5,8 +6,7 @@ const sequelize = new Sequelize(
     process.env.DB_PASS,
     {
         host: process.env.HOST,
-        dialect: 'mysql',
-        port: 3306
+        dialect: 'mysql'
     })
 async function testConnection() {
     try {
@@ -16,7 +16,6 @@ async function testConnection() {
         console.log(error)
     }
 }
-
 testConnection()
 
 module.exports = sequelize
