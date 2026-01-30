@@ -1,11 +1,4 @@
-const fs = require('fs')
-let envFile = '.env'
-if (process.env.NODE_ENV == 'production') {
-  envFile = '.env.production'
-} else if (fs.existsSync('.env.development')) {
-  envFile = '.env.development'
-}
-require('dotenv').config({ path: envFile })
+require('dotenv').config()
 
 const express = require('express')
 const cors = require('cors')
