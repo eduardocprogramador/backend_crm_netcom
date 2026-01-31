@@ -15,6 +15,8 @@ O **Backend CRM Netcom** processa os dados da aplicação, permitindo:
 - Busca de dados usados em **relatórios**
 - Padronização de respostas para consumo frontend
 
+O programa com dados fictícios pode ser visto em: http://crmnetcom.thespecialoffer.net/
+
 ---
 
 ## 🧠 Principais Funcionalidades
